@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
-import Sketch from "../models/Sketch";
+import Sketch from "../models/SketchModel";
 
 export default function useAnimateCanvas(sketch:Sketch) {
 	const requestRef = useRef(0);
-  const animate = (time: number) => {
+  const animate = () => {
     sketch.render();
     requestRef.current = requestAnimationFrame(animate);
   }

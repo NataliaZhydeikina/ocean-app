@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Sketch from "../models/Sketch";
+import Sketch from "../models/SketchModel";
 
 export default function useResizeCanvas(sketch:Sketch) {
 	useEffect(() => {

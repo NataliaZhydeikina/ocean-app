@@ -1,15 +1,13 @@
 import { RefObject, useRef } from "react";
 import {
-	BoxGeometry,
 	Mesh,
-	MeshNormalMaterial,
 	Scene,
 	PerspectiveCamera,
 	WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-export default class Sketch {
+export default class SketchModel {
 	private time: number;
 	private width: number;
 	private height: number;
@@ -19,10 +17,8 @@ export default class Sketch {
 	private scene: Scene;
 	private camera: PerspectiveCamera;
 	private renderer!: WebGLRenderer;
-	private geometry!: BoxGeometry;
-	private material!: MeshNormalMaterial;
-	private mesh!: Mesh;
 	private controls!: OrbitControls;
+	private objects: Mesh[] = [];
 
 	constructor(options: { width: number; height: number }) {
 		this.ref = useRef<HTMLCanvasElement>(null);
@@ -47,19 +43,16 @@ export default class Sketch {
 		this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 		this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 		this.controls.enableDamping = true;
-
-		this.addObjects();
-		this.render();
-
-		this.resize = this.resize.bind(this);
-		this.render = this.render.bind(this);
 	}
 
 	render() {
-		this.time += 0.05;
+		this.time += 0.005;
 
-		this.mesh.rotation.x = this.time / 2000;
-		this.mesh.rotation.y = this.time / 2000;
+		this.objects.forEach((object) => {
+			object.rotation.x = this.time;
+			object.rotation.y = this.time;
+		});
+
 		this.controls.update();
 		this.renderer.render(this.scene, this.camera);
 	}
@@ -72,15 +65,11 @@ export default class Sketch {
 		this.renderer.setSize(this.width, this.height);
 		this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));	
 		
-		this.render();
 	}
 
-	addObjects() {
-		this.geometry = new BoxGeometry(0.2, 0.2, 0.2);
-		this.material = new MeshNormalMaterial();
-
-		this.mesh = new Mesh(this.geometry, this.material);
-		this.scene.add(this.mesh);
+	addObject(object: Mesh) {
+		this.objects.push(object);
+		this.scene.add(object);
 	}
 	getRef() {
 		return this.ref;

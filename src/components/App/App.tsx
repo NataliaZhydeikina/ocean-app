@@ -4,7 +4,7 @@ import "./App.css";
 
 function App() {
 	return <Canvas>
-		<Box/>
+		<Box />
 		<Box position={{ x: -1 }}/>
 		<Box position={{ x: 1 }}/>
 	</Canvas>;

@@ -4,7 +4,7 @@ import {
 	MeshNormalMaterial
 } from "three";
 
-export default class BoxModel {
+export default class Box {
 	private width: number;
   private height: number;
   private depth: number;

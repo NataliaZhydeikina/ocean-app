@@ -7,7 +7,7 @@ import {
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
-export default class SketchModel {
+export default class Sketch {
 	private time: number;
 	private width: number;
 	private height: number;

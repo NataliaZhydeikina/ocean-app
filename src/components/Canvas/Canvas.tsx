@@ -1,9 +1,9 @@
 import "./Canvas.css";
 import useCanvas from "../../hooks/useCanvas";
 import { createContext, ReactNode } from "react";
-import SketchModel from "../../models/SketchModel";
+import Sketch from "../../services/Sketch";
 
-export const CanvasContext = createContext<SketchModel>({} as SketchModel);
+export const CanvasContext = createContext<Sketch>({} as Sketch);
 
 interface Props {
     children?: ReactNode

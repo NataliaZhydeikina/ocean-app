@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
-import BoxModel from "../../models/BoxModel";
-import { default as SketchModel } from "../../models/SketchModel";
+import BoxService from "../../services/Box";
+import Sketch from "../../services/Sketch";
 import { CanvasContext } from "../Canvas";
 
 interface Props {
@@ -12,8 +12,8 @@ interface Props {
 }
 
 function Box({position={ x:0, y:0, z:0 }}: Props) {
-  const sketch = useContext<SketchModel>(CanvasContext);  
-  const box = new BoxModel(0.2, 0.2, 0.2);
+  const sketch = useContext<Sketch>(CanvasContext);  
+  const box = new BoxService(0.2, 0.2, 0.2);
 
   useEffect(() => {
     const { x=0, y=0, z=0 } = position;

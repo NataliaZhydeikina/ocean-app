@@ -1,7 +1,7 @@
 import "./Canvas.css";
 import useCanvas from "../../hooks/useCanvas";
 import { createContext, ReactNode } from "react";
-import Sketch from "../../services/Sketch";
+import Sketch from "../../lib/webgl/common/Sketch";
 
 export const CanvasContext = createContext<Sketch>({} as Sketch);
 

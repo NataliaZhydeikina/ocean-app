@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Sketch from "../services/Sketch";
+import Sketch from "../lib/webgl/common/Sketch";
 import useResizeCanvas from "./useResizeCanvas";
 import useAnimateCanvas from "./useAnimateCanvas";
 

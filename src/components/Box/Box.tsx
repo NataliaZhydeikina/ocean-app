@@ -18,7 +18,7 @@ function Box({position={ x:0, y:0, z:0 }}: Props) {
   useEffect(() => {
     const { x=0, y=0, z=0 } = position;
     box.setPosition(x, y, z);
-    sketch.addObject(box.get());
+    sketch.addObject(box);
   }, []);
 
 	return <></>;

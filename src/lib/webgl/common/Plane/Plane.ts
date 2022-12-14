@@ -3,8 +3,9 @@ import {
 	Mesh
 } from "three";
 import Material from "../Material";
+import { Geometry } from "../../../../interfaces/Geometry";
 
-export default class Plane {
+export default class Plane implements Geometry {
 	private width: number;
   private height: number;
   private geometry!: PlaneGeometry;
@@ -20,11 +21,15 @@ export default class Plane {
     this.mesh = new Mesh(this.geometry, this.material);
   }
   
-  get() {
+  get(): Mesh {
 		return this.mesh;
   }
 
-  setPosition(x: number, y: number, z: number) {
+  setPosition(x: number, y: number, z: number): void {
     this.mesh.position.set(x, y, z);
+  }
+
+  update(value: number): void {
+    this.material.uniforms.uTime.value = value;
   }
 }

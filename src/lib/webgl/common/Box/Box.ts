@@ -3,8 +3,9 @@ import {
 	Mesh,
 	MeshNormalMaterial
 } from "three";
+import { Geometry } from "../../../../interfaces/Geometry";
 
-export default class Box {
+export default class Box implements Geometry {
 	private width: number;
   private height: number;
   private depth: number;
@@ -22,11 +23,15 @@ export default class Box {
     this.mesh = new Mesh(this.geometry, this.material);
   }
   
-  get() {
+  get(): Mesh {
 		return this.mesh;
   }
 
-  setPosition(x: number, y: number, z: number) {
+  setPosition(x: number, y: number, z: number): void {
     this.mesh.position.set(x, y, z);
+  }
+
+  update(value: number): void {
+    
   }
 }

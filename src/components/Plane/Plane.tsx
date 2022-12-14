@@ -13,12 +13,12 @@ interface Props {
 
 function Plane({position={ x:0, y:0, z:0 }}: Props) {
   const sketch = useContext<Sketch>(CanvasContext);  
-  const plane = new PlaneObject(0.2, 0.2);
+  const plane = new PlaneObject(1., 1.);
 
   useEffect(() => {
     const { x=0, y=0, z=0 } = position;
     plane.setPosition(x, y, z);
-    sketch.addObject(plane.get());
+    sketch.addObject(plane);
   }, []);
 
 	return <></>;

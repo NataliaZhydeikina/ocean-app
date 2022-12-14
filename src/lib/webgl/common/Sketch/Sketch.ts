@@ -6,9 +6,9 @@ import {
 	WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { Geometry } from "../../../../interfaces/Geometry";
 
 export default class Sketch {
-	private time: number;
 	private width: number;
 	private height: number;
 
@@ -18,11 +18,10 @@ export default class Sketch {
 	private camera: PerspectiveCamera;
 	private renderer!: WebGLRenderer;
 	private controls!: OrbitControls;
-	private objects: Mesh[] = [];
+	private objects: Geometry[] = [];
 
 	constructor(options: { width: number; height: number }) {
 		this.ref = useRef<HTMLCanvasElement>(null);
-		this.time = 0;
 		this.scene = new Scene();
 		this.width = options.width;
 		this.height = options.height;
@@ -33,7 +32,7 @@ export default class Sketch {
 		this.camera.updateProjectionMatrix();
 	}
 
-	init() {
+	init(): void {
 		this.canvas = this.ref.current as HTMLCanvasElement;
 		this.renderer = new WebGLRenderer({
 			canvas: this.canvas,
@@ -45,19 +44,13 @@ export default class Sketch {
 		this.controls.enableDamping = true;
 	}
 
-	render() {
-		this.time += 0.005;
-
-		this.objects.forEach((object) => {
-			object.rotation.x = this.time;
-			object.rotation.y = this.time;
-		});
-
+	render(value: number): void {
+		this.objects.forEach((object) => object.update(value));
 		this.controls.update();
 		this.renderer.render(this.scene, this.camera);
 	}
 
-	resize(width: number, height: number) {
+	resize(width: number, height: number): void {
 		this.width = width;
 		this.height = height;
 		this.camera.aspect = this.width / this.height;
@@ -67,11 +60,12 @@ export default class Sketch {
 		
 	}
 
-	addObject(object: Mesh) {
+	addObject(object: Geometry): void {
 		this.objects.push(object);
-		this.scene.add(object);
+		this.scene.add(object.get());
 	}
-	getRef() {
+	getRef(): RefObject<HTMLCanvasElement> {
 		return this.ref;
 	}
+
 }

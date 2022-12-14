@@ -8,7 +8,10 @@ export default class Material extends ShaderMaterial {
       side: DoubleSide,
       fragmentShader,
       vertexShader,
-      wireframe: true
+      wireframe: true,
+      uniforms: {
+        uTime: {value: 0}
+      }
     });
   }
 

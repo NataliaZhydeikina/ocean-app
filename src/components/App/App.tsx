@@ -5,7 +5,7 @@ import "./App.css";
 
 function App() {
 	return <Canvas>
-		<Plane rotation={[-1,0,0]} size={[5,2]} />
+		<Plane rotation={[0,0,0]} size={[1,1]} />
 	</Canvas>;
 }
 

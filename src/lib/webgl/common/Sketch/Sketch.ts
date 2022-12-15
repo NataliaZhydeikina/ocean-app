@@ -6,7 +6,7 @@ import {
 	WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { Geometry } from "../../../../interfaces/Geometry";
+import { Geometry } from "../../../../interfaces/Geometry.interface";
 
 export default class Sketch {
 	private width: number;

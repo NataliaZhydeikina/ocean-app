@@ -4,20 +4,33 @@ import Sketch from "../../lib/webgl/common/Sketch";
 import { CanvasContext } from "../Canvas";
 
 interface Props {
-  position?: {
+  position?: [
     x?: number,
     y?: number,
     z?: number
-  }
+  ],
+  rotation?: [
+    x?: number,
+    y?: number,
+    z?: number
+  ],
+  size?: [
+    width: number,
+    height: number
+  ]
 }
 
-function Plane({position={ x:0, y:0, z:0 }}: Props) {
+function Plane({
+  position = [ 0, 0, 0 ],
+  rotation = [0, 0, 0],
+  size = [1, 1]
+}: Props) {
   const sketch = useContext<Sketch>(CanvasContext);  
-  const plane = new PlaneObject(1., 1.);
+  const plane = new PlaneObject(...size);
 
   useEffect(() => {
-    const { x=0, y=0, z=0 } = position;
-    plane.setPosition(x, y, z);
+    plane.setPosition(...position);
+    plane.setRotation(...rotation);
     sketch.addObject(plane);
   }, []);
 

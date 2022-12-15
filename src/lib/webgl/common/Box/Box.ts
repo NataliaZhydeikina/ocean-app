@@ -3,7 +3,7 @@ import {
 	Mesh,
 	MeshNormalMaterial
 } from "three";
-import { Geometry } from "../../../../interfaces/Geometry";
+import { Geometry } from "../../../../interfaces/Geometry.interface";
 
 export default class Box implements Geometry {
 	private width: number;
@@ -27,11 +27,15 @@ export default class Box implements Geometry {
 		return this.mesh;
   }
 
-  setPosition(x: number, y: number, z: number): void {
+  update(value: number): void {
+    
+  }
+
+  setPosition(x: number|undefined = 0, y: number|undefined=0, z: number|undefined=0): void {
     this.mesh.position.set(x, y, z);
   }
 
-  update(value: number): void {
-    
+  setRotation(x: number|undefined = 0, y: number|undefined=0, z: number|undefined=0): void {
+    this?.mesh?.rotation?.set(x, y, z);
   }
 }

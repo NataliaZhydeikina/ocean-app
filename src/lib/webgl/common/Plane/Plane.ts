@@ -3,7 +3,7 @@ import {
 	Mesh
 } from "three";
 import Material from "../Material";
-import { Geometry } from "../../../../interfaces/Geometry";
+import { Geometry } from "../../../../interfaces/Geometry.interface";
 
 export default class Plane implements Geometry {
 	private width: number;
@@ -25,8 +25,12 @@ export default class Plane implements Geometry {
 		return this.mesh;
   }
 
-  setPosition(x: number, y: number, z: number): void {
+  setPosition(x: number|undefined = 0, y: number|undefined=0, z: number|undefined=0): void {
     this.mesh.position.set(x, y, z);
+  }
+
+  setRotation(x: number|undefined = 0, y: number|undefined=0, z: number|undefined=0): void {
+    this?.mesh?.rotation?.set(x, y, z);
   }
 
   update(value: number): void {

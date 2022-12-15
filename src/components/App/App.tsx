@@ -1,11 +1,10 @@
 import Canvas from "../Canvas";
-import Box from "../Box";
-import Plane from "../Plane";
+import Sphere from "../Sphere";
 import "./App.css";
 
 function App() {
 	return <Canvas>
-		<Plane rotation={[-0.75,0,0]} size={[1,1]} />
+		<Sphere rotation={[0,0,0]} size={[0.3,0.3]} />
 	</Canvas>;
 }
 

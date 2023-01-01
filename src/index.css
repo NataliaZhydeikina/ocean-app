@@ -1,7 +1,12 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
 html, body {
   margin: 0;
   height: 100%;
-  overflow: hidden;
   --moz-osx-font-smoothing: grayscale; 
   --webkit-font-smoothing: antialiased;
+  font-family: 'Open Sans', sans-serif;
 }

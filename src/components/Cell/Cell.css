@@ -13,10 +13,13 @@
   justify-self: end;
 }
 
-.item__image {
+.item img {
   width: 100%;
   display: block;
-  opacity: 0;
+  /* opacity: 0; */
+}
+
+.item__image {
   position: relative;
   margin-bottom: 0.6em;
 }

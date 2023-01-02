@@ -6,68 +6,77 @@ import Sphere from "../Sphere";
 import Header from "../Header";
 import "./App.css";
 import Cell from "../Cell";
+import Footer from "../Footer";
 
 
 function App() {
 	const [cells, setCells] = useState<ICell[]>([
 		{
+			index: 1,
 			link: "#",
 			img: "1.jpg",
-			meta: "December 23, 2020",
-			title: "Octopus punches fish in the head (just because it can)",
-			text: "Octopuses sometimes partner with fish to hunt, but the partnership comes with risks (for the fish, that is)."
+			meta: "December 23, 2022",
+			title: "Знаєш, що мексиканці говорять про Тихий океан? Кажуть, що у нього немає пам'яті.",
+			text: "Стівен Кінг"
 		},
 		{
+			index: 2,
 			link: "#",
 			img: "2.jpg",
-			meta: "December 01, 2020",
-			title: "Newfound marine blob looks like 'party balloon' with two strings, scientists say",
-			text: "This is the first species NOAA scientists have ever discovered from video footage alone."
+			meta: "December 24, 2022",
+			title: "Досить недоречно називати цю планету — Земля, коли очевидно, що вона — Океан.",
+			text: "Артур Кларк"
 		},
 		{
+			index: 3,
 			link: "#",
 			img: "3.jpg",
-			meta: "November 26, 2020",
-			title: "Swarm of eels breaks record",
-			text: "Before we start mining for precious metals in the darkness of the deep sea, we might try switching on the light first and observing our surroundings."
+			meta: "December 25, 2022",
+			title: "Ти ніколи не перепливеш океан, якщо будеш боятися втратити берег з уваги.",
+			text: "Христофор Колумб"
 		},
 		{
-			link: "#",
-			img: "3.jpg",
-			meta: "November 03, 2020",
-			title: "Mantis shrimp punch down",
-			text: "Home-stealers fought the hardest for smaller-than-ideal dens."
-		},
-		{
-			link: "#",
-			img: "1.jpg",
-			meta: "October 05, 2020",
-			title: "Megalodon's hugeness",
-			text: "Even among its extinct relatives, Megalodon was unequalled in length and mass."
-		},
-		{
-			link: "#",
-			img: "2.jpg",
-			meta: "July 27, 2020",
-			title: "Adorable sunfish",
-			text: "Sunfish in the Molidae family are among the biggest fish in the world."
-		},
-		{
+			index: 4,
 			link: "#",
 			img: "4.jpg",
-			meta: "August 18, 2020",
-			title: "Massive 'Darth Vader' sea bug",
-			text: "The newly described species is one of the biggest isopods known to science."
+			meta: "December 26, 2022",
+			title: "Якщо під боком немає океану, зійде і басейн. Якщо немає басейну, включи душ. Тоді можеш кричати, вити і ридати скільки тобі влізе, і ніхто про це не дізнається, ніхто не почує. Коли-небудь цим користувався?",
+			text: "Рей Бредбері"
 		},
 		{
+			index: 5,
+			link: "#",
+			img: "1.jpg",
+			meta: "December 27, 2022",
+			title: "Любов – над бурею піднятий маяк, немеркнучий в темряві і тумані, любов – зірка, якою моряк визначає місце в океані.",
+			text: "Вільям Шекспір"
+		},
+		{
+			index: 6,
+			link: "#",
+			img: "2.jpg",
+			meta: "December 28, 2022",
+			title: "Любов! Скільки неосяжного в цьому слові! Який океан в одній сльозі! Яке небо в одному погляді! Яка буря в одному подиху! Яка блискавка в одному дотику! Яка вічність в одному моменті!",
+			text: "А. Франс"
+		},
+		{
+			index: 7,
+			link: "#",
+			img: "4.jpg",
+			meta: "December 29, 2022",
+			title: "Я не терплю стін і перегородок. Небо, що охоплює по всій землі, вітер, що не зустрічає перешкод, океан, що омиває всі берега, – ось ідеал.",
+			text: "Махатма Ганді"
+		},
+		{
+			index: 8,
 			link: "#",
 			img: "3.jpg",
-			meta: "June 01, 2020",
-			title: "Scientists capture the world's deepest octopus",
-			text: "The octopus was found miles beneath the ocean surface."
+			meta: "December 30, 2022",
+			title: "Погляньте-но на океан, хіба це не жива істота? Часом гнівне, часом ніжне!",
+			text: "Жюль Верн"
 		},
 	]);
-	return <div>
+	return <>
 		<main>
 			<div data-scroll>
 				<div className="page">
@@ -75,9 +84,7 @@ function App() {
 					<div className="grid">
 						{cells.map((params: ICell) => <Cell key={uuid()} {...params} />)}
 					</div>
-					<footer className="footer">
-						<p>&copy; all news from <a href="https://www.livescience.com/topics/ocean">LiveScience</a></p>
-					</footer>
+					<Footer />
 				</div>
 			</div>
 		</main>
@@ -86,7 +93,7 @@ function App() {
 				<Sphere rotation={[0, 0, 0]} size={[0.3, 0.3]} />
 			</Canvas>
 		</div>
-	</div>;
+	</>;
 }
 
 export default App;

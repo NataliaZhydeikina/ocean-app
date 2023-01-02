@@ -1,10 +1,10 @@
 import "./Cell.css";
 import { ICell } from "../../interfaces/Cell.interface";
 
-const Cell = ({ link, img, meta, title, text }: ICell) => {
-  return <a href={link} className="item item_v">
+const Cell = ({ link, img, meta, title, text, index }: ICell) => {
+  return <a href={link} className={`item ${index % 2 ? "item_v" : "item_h"}`}>
     <div className="item__image">
-      <img src={img} alt="" />
+      <img src={`/src/assets/imgs/${img}`} alt="" />
       <div className="item__meta">{meta}</div>
     </div>
     <h2 className="item__title">{title}</h2>

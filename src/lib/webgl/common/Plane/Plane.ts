@@ -1,8 +1,9 @@
 import {
 	PlaneGeometry,
-	Mesh
+	Mesh,
+  Material
 } from "three";
-import Material from "../Material";
+import CustomMaterial from "../Material";
 import { Geometry } from "../../../../interfaces/Geometry.interface";
 
 export default class Plane implements Geometry {
@@ -16,24 +17,27 @@ export default class Plane implements Geometry {
 		this.width = width;
     this.height = height;
     
-    this.geometry = new PlaneGeometry(this.width, this.height, this.width*64, this.height*64);
-		this.material = new Material();
+    this.geometry = new PlaneGeometry(this.width, this.height, Math.max(1,this.width/25), Math.max(1, this.height/25));
+		this.material = new CustomMaterial();
     this.mesh = new Mesh(this.geometry, this.material);
   }
-  
   get(): Mesh {
 		return this.mesh;
   }
-
+  setMaterial(material: Material){
+    this.material = material;
+    this.material.needsUpdate = true;
+    this.mesh.material = this.material;
+  }
   setPosition(x: number|undefined = 0, y: number|undefined=0, z: number|undefined=0): void {
     this.mesh.position.set(x, y, z);
   }
-
   setRotation(x: number|undefined = 0, y: number|undefined=0, z: number|undefined=0): void {
     this?.mesh?.rotation?.set(x, y, z);
   }
-
   update(value: number): void {
-    this.material.uniforms.uTime.value = value;
+    if(this.material instanceof CustomMaterial) {
+      this.material?.update(value);
+    }
   }
 }

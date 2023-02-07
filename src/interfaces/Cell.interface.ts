@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+
 export interface ICell {
   index: number,
   link: string,

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import Sketch from "../models/SketchModel";
+import Sketch from "../lib/webgl/common/Sketch";
 
-export default function useResizeCanvas(sketch:Sketch) {
+export default function useResizeCanvas(sketch: Sketch) {
 	useEffect(() => {
 		function handleResize() {
 			sketch.resize(innerWidth, innerHeight);

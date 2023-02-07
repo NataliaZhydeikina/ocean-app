@@ -6,6 +6,7 @@ import ocean from "../../../../assets/imgs/ocean.jpg";
 export default class Material extends ShaderMaterial {
   constructor() {
     super({
+      wireframe: true,
       side: DoubleSide,
       fragmentShader,
       vertexShader,
@@ -15,5 +16,7 @@ export default class Material extends ShaderMaterial {
       }
     });
   }
-
+  update(value: number): void {
+    this.uniforms.uTime.value = value;
+  }
 }

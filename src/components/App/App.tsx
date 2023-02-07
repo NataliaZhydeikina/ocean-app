@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import uuid from 'react-uuid';
+import "./App.css";
 import { ICell } from "../../interfaces/Cell.interface";
 import Canvas from "../Canvas";
-import Sphere from "../Sphere";
+import Image from "../Image";
 import Header from "../Header";
-import "./App.css";
 import Cell from "../Cell";
 import Footer from "../Footer";
+import Scroll from "../Scroll";
+import useOnLoadImages from "../../hooks/useOnLoadImages";
 
 
 function App() {
@@ -76,21 +78,23 @@ function App() {
 			text: "Жюль Верн"
 		},
 	]);
+	const imageRefs = useRef<HTMLImageElement[]>(new Array(cells.length));
+	const wrapperRef = useRef<HTMLDivElement>(null);
+	const imagesLoaded = useOnLoadImages(wrapperRef);
+
 	return <>
-		<main>
-			<div data-scroll>
-				<div className="page">
-					<Header />
-					<div className="grid">
-						{cells.map((params: ICell) => <Cell key={uuid()} {...params} />)}
-					</div>
-					<Footer />
+		<Scroll>
+			{<div className="page">
+				<Header />
+				<div className="grid" ref={wrapperRef}>
+					{cells.map((params: ICell, i:number) => <Cell key={uuid()} ref={(element) => imageRefs.current[i] = element as HTMLImageElement} {...params} />)}
 				</div>
-			</div>
-		</main>
+				<Footer />
+			</div>}
+		</Scroll>
 		<div id="container">
 			<Canvas>
-				<Sphere rotation={[0, 0, 0]} size={[0.3, 0.3]} />
+				{imagesLoaded && imageRefs.current.map((img: HTMLImageElement) => <Image key={uuid()} img={img} />)}
 			</Canvas>
 		</div>
 	</>;

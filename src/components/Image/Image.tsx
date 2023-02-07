@@ -21,6 +21,7 @@ function Image({
     const x = left - widthCanvas/2 + width/2;
     const y = -top + heightCanvas/2 - height/2;
     image.setPosition(x, y, 0);
+    image.setUpdate(() => image.setPosition(x, sketch.getScroll()+y, 0));
     const texture = new Texture(img);
     texture.needsUpdate = true;
     image.setMaterial(new MeshBasicMaterial({

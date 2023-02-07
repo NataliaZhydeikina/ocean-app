@@ -1,11 +1,8 @@
-import { createRef, RefObject, useRef } from "react";
+import { createRef, RefObject } from "react";
 import {
-	Mesh,
 	Scene,
 	PerspectiveCamera,
-	WebGLRenderer,
-	PlaneGeometry,
-	MeshBasicMaterial
+	WebGLRenderer
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Geometry } from "../../../../interfaces/Geometry.interface";
@@ -20,6 +17,7 @@ export default class Sketch {
 	private renderer!: WebGLRenderer;
 	private controls!: OrbitControls;
 	private objects: Geometry[] = [];
+	private scroll?: number;
 
 	constructor(options: { width: number; height: number }) {
 		this.ref = createRef();
@@ -75,5 +73,11 @@ export default class Sketch {
 	}
 	getSize():[number, number] {
 		return [this.width, this.height];
+	}
+	getScroll(): number {
+		return this.scroll || 0;
+	}
+	setScroll(scroll: number) {
+		this.scroll = scroll;
 	}
 }

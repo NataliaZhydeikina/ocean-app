@@ -2,18 +2,18 @@ import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import ScrollObject from "../../lib/ui/Scroll";
 
 interface Props {
-    children?: ReactNode
+    layout: ReactNode,
+    canvas: ReactNode
 }
-export const ScrollContext = createContext<number>(0);
+export const ScrollContext = createContext({} as ScrollObject);
 
-function Scroll({children}: Props) {
+function Scroll({ layout, canvas }: Props) {
     const scroll = new ScrollObject();
     const scrollRef = useRef(0);
     const [mainStyle, setMainStyle] = useState({});
-    const [scrollToRender, setScrollToRender] = useState(0);
-
+ 
     useEffect(() => {
-        scroll.init();
+        scrollRef.current = scroll.init();
         setMainStyle({
             position: "fixed",
             width: "100%",
@@ -22,26 +22,17 @@ function Scroll({children}: Props) {
             left: 0,
             overflow: "hidden"
         });
-        window.onbeforeunload = function() {
-            window.scrollTo(0, 0);
-        };
-        scrollRef.current = requestAnimationFrame(() => scroll.render());
-        window.addEventListener("resize", scroll.setSize);
-        window.addEventListener("scroll", scroll.scrolled);
 
-        return () => {
-            window.removeEventListener('resize', scroll.setSize);
-            window.removeEventListener("scroll", scroll.scrolled);
-            cancelAnimationFrame(scrollRef.current);
-        }
+        return () => scroll.destroy(scrollRef.current)
     }, []);
 
-    return <ScrollContext.Provider value={scrollToRender}>
+    return <ScrollContext.Provider value={scroll}>
         <main style={mainStyle}>
             <div data-scroll ref={scroll.getRef()}>
-                {children}
+                {layout}
             </div>
         </main>
+        {canvas}
     </ScrollContext.Provider>;
 }
 

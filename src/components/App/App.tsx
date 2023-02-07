@@ -83,22 +83,24 @@ function App() {
 	const imagesLoaded = useOnLoadImages(wrapperRef);
 
 	return <>
-		<main>
-        	<div data-scroll>
-			{<div className="page">
-				<Header />
-				<div className="grid" ref={wrapperRef}>
-					{cells.map((params: ICell, i:number) => <Cell key={uuid()} ref={(element) => imageRefs.current[i] = element as HTMLImageElement} {...params} />)}
-				</div>
-				<Footer />
-			</div>}
+		<Scroll 
+		layout={
+		<div className="page">
+			<Header />
+			<div className="grid" ref={wrapperRef}>
+				{cells.map((params: ICell, i:number) => <Cell key={uuid()} ref={(element) => imageRefs.current[i] = element as HTMLImageElement} {...params} />)}
 			</div>
-		</main>
+			<Footer />
+		</div>
+		}
+		canvas={
 		<div id="container">
 			<Canvas>
 				{imagesLoaded && imageRefs.current.map((img: HTMLImageElement) => <Image key={uuid()} img={img} />)}
 			</Canvas>
 		</div>
+		}
+		/>
 	</>;
 }
 

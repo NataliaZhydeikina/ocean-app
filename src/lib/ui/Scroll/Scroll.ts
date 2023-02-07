@@ -8,6 +8,7 @@ export default class Scroll {
     private speed: number;
     private speedTarget: number;
     private ease: number;
+    private callbacks: Array<()=>void>
 
     constructor() {
         this.scrollable = useRef(null);
@@ -17,11 +18,23 @@ export default class Scroll {
         this.current = 0;
         this.speed = 0;
         this.speedTarget = 0;
+        this.callbacks = [];
     }
     init() {
         this.setSize();
         this.current = this.scrollToRender = this.scrolled();
         this.setPosition();
+        window.onbeforeunload = function() {
+            window.scrollTo(0, 0);
+        };
+        window.addEventListener("resize", this.setSize);
+        window.addEventListener("scroll", this.scrolled);
+        return requestAnimationFrame(() => this.render());
+    }
+    destroy(ref: number) {
+        window.removeEventListener('resize', this.setSize);
+        window.removeEventListener("scroll", this.scrolled);
+        cancelAnimationFrame(ref);
     }
     setSize() {
         document.body.style.height = `${this.scrollable.current?.scrollHeight}px`;
@@ -32,7 +45,7 @@ export default class Scroll {
     }
     setPosition() {
         if (this.scrollable.current !== null && 
-            (Math.round(this.scrollToRender) !== Math.round(this.current) || this.scrollToRender < 10)) {
+            (this.scrollToRender !== this.current || this.scrollToRender < 10)) {
             this.scrollable.current.style.transform = `translate3d(0,${-1 * this.scrollToRender}px,0)`;
         }
     }
@@ -42,13 +55,14 @@ export default class Scroll {
     render() {
         this.speed = Math.min(Math.abs(this.current - this.scrollToRender), 200)/200;
         this.speedTarget +=(this.speed - this.speedTarget)*0.2;
-        this.current = this.scrolled();
-        this.scrollToRender = this.lerp(
+        this.current = Math.round(this.scrolled()*100)/100;
+        this.scrollToRender = Math.round(this.lerp(
             this.scrollToRender,
             this.current,
             this.ease
-        );
+        )*100)/100;
         this.setPosition();
+        this.callbacks.forEach(callback=>callback());
         requestAnimationFrame(() => this.render());
     }
     getRef() {

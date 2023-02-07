@@ -12,6 +12,7 @@ export default class Plane implements Geometry {
   private geometry!: PlaneGeometry;
   private material!: Material;
   private mesh!: Mesh;
+  private updateFunc: (params?: number) => void;
 
   constructor(width: number, height: number) {
 		this.width = width;
@@ -20,6 +21,7 @@ export default class Plane implements Geometry {
     this.geometry = new PlaneGeometry(this.width, this.height, Math.max(1,this.width/25), Math.max(1, this.height/25));
 		this.material = new CustomMaterial();
     this.mesh = new Mesh(this.geometry, this.material);
+    this.updateFunc = this.updateMaterial;
   }
   get(): Mesh {
 		return this.mesh;
@@ -35,9 +37,16 @@ export default class Plane implements Geometry {
   setRotation(x: number|undefined = 0, y: number|undefined=0, z: number|undefined=0): void {
     this?.mesh?.rotation?.set(x, y, z);
   }
-  update(value: number): void {
+  update(param: number) {
+    this.updateFunc(param);
+  }
+  setUpdate(callback:()=>void) {
+    this.updateFunc = callback;
+  }
+  private updateMaterial(value?: number): void {
     if(this.material instanceof CustomMaterial) {
-      this.material?.update(value);
+      this.material?.update(value || 0);
     }
   }
+
 }

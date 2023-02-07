@@ -83,7 +83,8 @@ function App() {
 	const imagesLoaded = useOnLoadImages(wrapperRef);
 
 	return <>
-		<Scroll>
+		<main>
+        	<div data-scroll>
 			{<div className="page">
 				<Header />
 				<div className="grid" ref={wrapperRef}>
@@ -91,7 +92,8 @@ function App() {
 				</div>
 				<Footer />
 			</div>}
-		</Scroll>
+			</div>
+		</main>
 		<div id="container">
 			<Canvas>
 				{imagesLoaded && imageRefs.current.map((img: HTMLImageElement) => <Image key={uuid()} img={img} />)}

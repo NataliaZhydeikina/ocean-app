@@ -27,17 +27,19 @@ export default class Scroll {
         window.onbeforeunload = function() {
             window.scrollTo(0, 0);
         };
-        window.addEventListener("resize", this.setSize);
-        window.addEventListener("scroll", this.scrolled);
+        window.addEventListener("resize", this.setSize.bind(this));
+        window.addEventListener("scroll", this.scrolled.bind(this));
         return requestAnimationFrame(() => this.render());
     }
     destroy(ref: number) {
-        window.removeEventListener('resize', this.setSize);
-        window.removeEventListener("scroll", this.scrolled);
+        window.removeEventListener('resize', this.setSize.bind(this));
+        window.removeEventListener("scroll", this.scrolled.bind(this));
         cancelAnimationFrame(ref);
     }
     setSize() {
-        document.body.style.height = `${this.scrollable.current?.scrollHeight}px`;
+        if(this.scrollable && this.scrollable.current) {
+            document.body.style.height = `${this.scrollable.current?.scrollHeight}px`;
+        }
     }
     scrolled() {
         this.documentScroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -45,7 +47,7 @@ export default class Scroll {
     }
     setPosition() {
         if (this.scrollable.current !== null && 
-            (this.scrollToRender !== this.current || this.scrollToRender < 10)) {
+            (Math.round(this.scrollToRender) !== Math.round(this.current) || this.scrollToRender < 10)) {
             this.scrollable.current.style.transform = `translate3d(0,${-1 * this.scrollToRender}px,0)`;
         }
     }
@@ -55,17 +57,20 @@ export default class Scroll {
     render() {
         this.speed = Math.min(Math.abs(this.current - this.scrollToRender), 200)/200;
         this.speedTarget +=(this.speed - this.speedTarget)*0.2;
-        this.current = Math.round(this.scrolled()*100)/100;
-        this.scrollToRender = Math.round(this.lerp(
+        this.current = this.scrolled();
+        this.scrollToRender = this.lerp(
             this.scrollToRender,
             this.current,
             this.ease
-        )*100)/100;
+        );
         this.setPosition();
         this.callbacks.forEach(callback=>callback());
         requestAnimationFrame(() => this.render());
-    }
+    } 
     getRef() {
         return this.scrollable;
+    }
+    setCallback(callback:()=>void){
+        this.callbacks.push(callback);
     }
 }

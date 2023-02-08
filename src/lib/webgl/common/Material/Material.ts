@@ -1,18 +1,19 @@
-import { ShaderMaterial, DoubleSide, TextureLoader } from "three";
-import vertexShader from "../../shaders/OceanShader/OceanShader.glsl";
-import fragmentShader from "../../shaders/OceanShader/OceanShader.frag";
-import ocean from "../../../../assets/imgs/ocean.jpg";
+import { ShaderMaterial, DoubleSide, Vector2 } from "three";
+import vertexShader from "../../shaders/ImageShader/ImageShader.glsl";
+import fragmentShader from "../../shaders/ImageShader/ImageShader.frag";
 
 export default class Material extends ShaderMaterial {
-  constructor() {
+  constructor(img?: HTMLImageElement) {
     super({
-      wireframe: true,
+      wireframe: false,
       side: DoubleSide,
       fragmentShader,
       vertexShader,
       uniforms: {
         uTime: { value: 0 },
-        oceanTexture: {value: new TextureLoader().load(ocean) }
+        uImage: {value: null},
+        hover: {value: new Vector2(0.5,0.5)},
+        hoverState: {value: 0},
       }
     });
   }

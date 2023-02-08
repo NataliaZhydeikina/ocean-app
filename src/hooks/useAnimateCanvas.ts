@@ -6,22 +6,16 @@ import Sketch from "../lib/webgl/common/Sketch";
 
 export default function useAnimateCanvas(sketch: Sketch) {
   const clock = new Clock();
-  const requestRef = useRef(0);
   const scroll = useContext<Scroll>(ScrollContext);  
-
+  
   const animate = () => {
-    console.log(scroll.scrollToRender);
     sketch.setScroll(scroll.scrollToRender);
     const elapsedTime = clock.getElapsedTime();
     sketch.render(elapsedTime);
-    requestRef.current = requestAnimationFrame(animate);
   }
   useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate);
-		return () => {
-			cancelAnimationFrame(requestRef.current);
-		}
-	}, []);
+    scroll.setCallback(animate);
+  }, []);
 
 	return sketch;
 }

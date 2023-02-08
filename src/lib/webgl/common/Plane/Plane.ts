@@ -10,23 +10,29 @@ export default class Plane implements Geometry {
 	private width: number;
   private height: number;
   private geometry!: PlaneGeometry;
-  private material!: Material;
+  material!: CustomMaterial;
   private mesh!: Mesh;
-  private updateFunc: (params?: number) => void;
+  private updateFunc: {(params?: number):void}[];
+  private img?: HTMLImageElement;
 
-  constructor(width: number, height: number) {
+  constructor(width: number, height: number, img?: HTMLImageElement) {
 		this.width = width;
     this.height = height;
+    if(img) {
+      this.img = img;
+    }
     
     this.geometry = new PlaneGeometry(this.width, this.height, Math.max(1,this.width/25), Math.max(1, this.height/25));
 		this.material = new CustomMaterial();
     this.mesh = new Mesh(this.geometry, this.material);
-    this.updateFunc = this.updateMaterial;
+    this.updateFunc = [this.updateMaterial.bind(this)];
+  }
+  resize() {
   }
   get(): Mesh {
 		return this.mesh;
   }
-  setMaterial(material: Material){
+  setMaterial(material: CustomMaterial){
     this.material = material;
     this.material.needsUpdate = true;
     this.mesh.material = this.material;
@@ -38,15 +44,13 @@ export default class Plane implements Geometry {
     this?.mesh?.rotation?.set(x, y, z);
   }
   update(param: number) {
-    this.updateFunc(param);
+    this.updateFunc.forEach(func => func(param));
   }
   setUpdate(callback:()=>void) {
-    this.updateFunc = callback;
+    this.updateFunc.push(callback);
   }
   private updateMaterial(value?: number): void {
-    if(this.material instanceof CustomMaterial) {
-      this.material?.update(value || 0);
-    }
+    this.material?.update(value || 0);
   }
 
 }

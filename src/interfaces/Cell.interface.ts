@@ -6,5 +6,7 @@ export interface ICell {
   img: string,
   meta: string,
   title: string,
-  text: string
+  text: string,
+  mouseenter: {():void}|null,
+  mouseout: {():void}|null,
 }

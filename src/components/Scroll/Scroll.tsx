@@ -26,6 +26,10 @@ function Scroll({ layout, canvas }: Props) {
         return () => scroll.destroy(scrollRef.current)
     }, []);
 
+    useEffect(()=>{
+        scroll.setSize()
+    }, [scroll.scrollable.current?.scrollHeight]);
+
     return <ScrollContext.Provider value={scroll}>
         <main style={mainStyle}>
             <div data-scroll ref={scroll.getRef()}>

@@ -1,7 +1,7 @@
 import { RefObject, useRef } from "react";
 
 export default class Scroll {
-    private scrollable: RefObject<HTMLDivElement>;
+    public scrollable: RefObject<HTMLDivElement>;
     private documentScroll: number;
     public scrollToRender: number;
     private current: number;
@@ -38,7 +38,7 @@ export default class Scroll {
     }
     setSize() {
         if(this.scrollable && this.scrollable.current) {
-            document.body.style.height = `${this.scrollable.current?.scrollHeight * devicePixelRatio}px`;
+            document.body.style.height = `${this.scrollable.current?.scrollHeight}px`;
         }
     }
     scrolled() {

@@ -1,7 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+}
+
 html, body {
   margin: 0;
   height: 100%;
-  overflow: hidden;
   --moz-osx-font-smoothing: grayscale; 
   --webkit-font-smoothing: antialiased;
+  font-family: 'Open Sans', sans-serif;
 }

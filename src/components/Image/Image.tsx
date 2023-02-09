@@ -1,8 +1,6 @@
-import gsap from "gsap";
 import { useContext, useEffect } from "react";
-import { Mesh, Texture } from "three";
+import { Texture } from "three";
 import { ICell } from "../../interfaces/Cell.interface";
-import Material from "../../lib/webgl/common/Material";
 import PlaneObject from "../../lib/webgl/common/Plane";
 import Sketch from "../../lib/webgl/common/Sketch";
 import { CanvasContext } from "../Canvas";

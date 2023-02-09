@@ -10,6 +10,10 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Geometry } from "../../../../interfaces/Geometry.interface";
 import Material from "../Material";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 export default class Sketch {
 	private width: number;
@@ -24,6 +28,11 @@ export default class Sketch {
 	private scroll?: number;
 	private raycaster: Raycaster;
 	private mouse: Vector2;
+	composer!: EffectComposer;
+	renderPass!: RenderPass;
+	myEffect!: { uniforms: { tDiffuse: { value: null; }; scrollSpeed: { value: null; }; }; vertexShader: string; fragmentShader: string; };
+	customPass!: ShaderPass;
+	speedTarget?: number;
 
 	constructor(options: { width: number; height: number }) {
 		this.ref = createRef();
@@ -51,15 +60,55 @@ export default class Sketch {
 		this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 		this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 		this.controls.enableDamping = true;
-		this.renderer.render(this.scene, this.camera);
+		//this.renderer.render(this.scene, this.camera);
+		this.composerPass();
+		this.composer.render();
 		return this;
 	}
 
 	render(value?: number): void {
 		if(value) this.objects.forEach((object) => object.update(value));
-		this.renderer.render(this.scene, this.camera);
+		this.customPass.uniforms.scrollSpeed.value = this.speedTarget;
+		//this.renderer.render(this.scene, this.camera);
+		this.composer.render();
 	}
-
+	composerPass(){
+		this.composer = new EffectComposer(this.renderer);
+		this.renderPass = new RenderPass(this.scene, this.camera);
+		this.composer.addPass(this.renderPass);
+		//custom shader pass
+		let counter = 0.0;
+		this.myEffect = {
+		  uniforms: {
+			"tDiffuse": { value: null },
+			"scrollSpeed": { value: null },
+		  },
+		  vertexShader: `
+		  varying vec2 vUv;
+		  void main() {
+			vUv = uv;
+			gl_Position = projectionMatrix 
+			  * modelViewMatrix 
+			  * vec4( position, 1.0 );
+		  }
+		  `,
+		  fragmentShader: `
+		  uniform sampler2D tDiffuse;
+		  varying vec2 vUv;
+		  uniform float scrollSpeed;
+		  void main(){
+			vec2 newUV = vUv;
+			float area = smoothstep(0.4,0.,vUv.y);
+			area = pow(area,4.);
+			newUV.x -= (vUv.x - 0.5)*0.1*area*scrollSpeed;
+			gl_FragColor = texture2D( tDiffuse, newUV);
+		  }
+		  `
+		}
+		this.customPass = new ShaderPass(this.myEffect);
+		this.customPass.renderToScreen = true;
+		this.composer.addPass(this.customPass);
+	}
 	resize(width: number, height: number): void {
 		this.width = width;
 		this.height = height;
@@ -84,12 +133,14 @@ export default class Sketch {
 		this.objects.push(object);
 		this.scene.add(object.get());
 		if(this.renderer)
-		this.renderer.render(this.scene, this.camera);
+		//this.renderer.render(this.scene, this.camera);
+		this.composer.render();
 	}
 	removeObject(object: Geometry): void {
 		this.objects = this.objects.filter(obj=>obj!==object);
 		this.scene.remove(object.get());
-		this.renderer.render(this.scene, this.camera);
+		//this.renderer.render(this.scene, this.camera);
+		this.composer.render();
 	}
 	getRef(): RefObject<HTMLCanvasElement> {
 		return this.ref;
@@ -100,7 +151,8 @@ export default class Sketch {
 	getScroll(): number {
 		return this.scroll || 0;
 	}
-	setScroll(scroll: number) {
+	setScroll(scroll: number, speedTarget: number) {
 		this.scroll = scroll;
+		this.speedTarget = speedTarget;
 	}
 }

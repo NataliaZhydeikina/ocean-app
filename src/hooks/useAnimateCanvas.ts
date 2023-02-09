@@ -9,7 +9,7 @@ export default function useAnimateCanvas(sketch: Sketch) {
   const scroll = useContext<Scroll>(ScrollContext);  
   
   const animate = () => {
-    sketch.setScroll(scroll.scrollToRender);
+    sketch.setScroll(scroll.scrollToRender, scroll.speedTarget);
     const elapsedTime = clock.getElapsedTime();
     sketch.render(elapsedTime);
   }

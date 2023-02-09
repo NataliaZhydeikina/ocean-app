@@ -6,7 +6,7 @@ export default class Scroll {
     public scrollToRender: number;
     private current: number;
     private speed: number;
-    private speedTarget: number;
+    public speedTarget: number;
     private ease: number;
     private callbacks: Array<()=>void>
 
@@ -38,7 +38,7 @@ export default class Scroll {
     }
     setSize() {
         if(this.scrollable && this.scrollable.current) {
-            document.body.style.height = `${this.scrollable.current?.scrollHeight}px`;
+            document.body.style.height = `${this.scrollable.current?.scrollHeight * devicePixelRatio}px`;
         }
     }
     scrolled() {

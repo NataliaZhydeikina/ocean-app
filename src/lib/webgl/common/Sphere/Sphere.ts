@@ -9,7 +9,7 @@ export default class Sphere implements Geometry {
 	private width: number;
   private height: number;
   private geometry!: SphereGeometry;
-  private material!: Material;
+  public material!: Material;
   private mesh!: Mesh;
 
   constructor(width: number, height: number) {
@@ -19,6 +19,9 @@ export default class Sphere implements Geometry {
     this.geometry = new SphereGeometry(this.width, this.width*128, this.height*128);
 		this.material = new Material();
     this.mesh = new Mesh(this.geometry, this.material);
+  }
+  resize(): void {
+    throw new Error("Method not implemented.");
   }
   
   get(): Mesh {

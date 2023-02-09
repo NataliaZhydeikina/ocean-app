@@ -10,7 +10,7 @@ export default class Box implements Geometry {
   private height: number;
   private depth: number;
   private geometry!: BoxGeometry;
-  private material!: MeshNormalMaterial;
+  public material!: MeshNormalMaterial;
   private mesh!: Mesh;
 
   constructor(width: number, height: number, depth: number) {
@@ -21,6 +21,9 @@ export default class Box implements Geometry {
     this.geometry = new BoxGeometry(this.width, this.height, this.depth);
 		this.material = new MeshNormalMaterial();
     this.mesh = new Mesh(this.geometry, this.material);
+  }
+  resize(): void {
+    throw new Error("Method not implemented.");
   }
   
   get(): Mesh {
